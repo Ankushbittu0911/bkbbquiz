@@ -35,11 +35,20 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: [
-    process.env.CLIENT_URL || 'https://bkbbquiz.vercel.app',
-    process.env.ADMIN_URL || 'https://bkbbquiz-fgfd.vercel.app',
-  ],
-  credentials: true,
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "https://bkbbquiz.vercel.app",
+      "https://bkbbquiz-fgfd.vercel.app"
+    ];
+
+    // allow requests with no origin (like mobile apps, postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
