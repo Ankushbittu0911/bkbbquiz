@@ -36,8 +36,8 @@ connectDB();
 // Middleware
 app.use(cors({
   origin: [
-    process.env.CLIENT_URL || 'http://localhost:5173',
-    process.env.ADMIN_URL || 'http://localhost:5174',
+    process.env.CLIENT_URL || 'https://bkbbquiz.vercel.app',
+    process.env.ADMIN_URL || 'https://bkbbquiz-fgfd.vercel.app/',
   ],
   credentials: true,
 }));
