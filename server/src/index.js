@@ -37,7 +37,7 @@ connectDB();
 app.use(cors({
   origin: [
     process.env.CLIENT_URL || 'https://bkbbquiz.vercel.app',
-    process.env.ADMIN_URL || 'https://bkbbquiz-fgfd.vercel.app/',
+    process.env.ADMIN_URL || 'https://bkbbquiz-fgfd.vercel.app',
   ],
   credentials: true,
 }));
