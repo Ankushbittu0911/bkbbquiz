@@ -1,0 +1,27 @@
+{
+  "name": "bkbbquiz-server",
+  "version": "1.0.0",
+  "description": "BKBBQUIZ Backend API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "seed": "node src/scripts/seed.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "quiz",
+    "contest",
+    "gaming"
+  ],
+  "author": "BKBBQUIZ Team",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "helmet": "^8.1.0"
+  }
+}

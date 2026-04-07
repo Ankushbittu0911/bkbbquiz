@@ -1,0 +1,5 @@
+﻿Γùç injected env (19) from .env // tip: Γîü auth for agents [www.vestauth.com]
+Γùç injected env (0) from .env // tip: Γîü auth for agents [www.vestauth.com]
+App loaded OK
+≡ƒÜÇ BKBBQUIZ Server running on port 5000 [development]
+Γ£à MongoDB Connected: ac-yxkmzst-shard-00-02.vvulhlj.mongodb.net
