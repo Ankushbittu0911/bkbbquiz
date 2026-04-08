@@ -38,6 +38,9 @@ connectDB();
 const allowedOrigins = [
   'https://bkbbquiz.vercel.app',
   'https://bkbbquiz-fgfd.vercel.app',
+  'https://bkbbquiz.top',
+  'https://www.bkbbquiz.top',
+  'https://admin.bkbbquiz.top',
   process.env.CLIENT_URL,
   process.env.ADMIN_URL,
 ];
