@@ -29,6 +29,7 @@ const adminSettings = require('./routes/admin/settings');
 const adminTickets = require('./routes/admin/tickets');
 
 const app = express();
+app.set('trust proxy' 1);
 
 // Connect to database
 connectDB();
