@@ -16,9 +16,13 @@ export default function ResetPasswordPage() {
   const mutation = useMutation({
     mutationFn: (data) => api.post(`/auth/reset-password/${token}`, data),
     onSuccess: ({ data }) => {
-      if (data.token) setAuth(data.user, data.token);
-      toast.success('Password reset successfully!');
-      navigate('/login');
+      if (data.token && data.user) {
+        setAuth(data.user, data.token);
+        toast.success('Password reset successfully!');
+        navigate('/');
+      } else {
+        toast.error('Reset failed. Please try again.');
+      }
     },
     onError: (err) => toast.error(err.response?.data?.message || 'Reset failed'),
   });

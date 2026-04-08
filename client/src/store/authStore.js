@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 const useAuthStore = create((set) => ({
-  user: JSON.parse(localStorage.getItem('bkbb_user') || 'null'),
+  user: (() => { try { return JSON.parse(localStorage.getItem('bkbb_user') || 'null'); } catch { localStorage.removeItem('bkbb_user'); return null; } })(),
   token: localStorage.getItem('bkbb_token') || null,
   isLoading: false,
 
