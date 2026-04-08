@@ -54,7 +54,19 @@ const sendPasswordResetEmail = async (email, name, resetUrl) => {
       </html>
     `,
   };
-  await transporter.sendMail(mailOptions);
+  try {
+    console.log('EMAIL_USER:', process.env.EMAIL_USER);
+    console.log('EMAIL_PASS exists:', !!process.env.EMAIL_PASS);
+    console.log('EMAIL_HOST:', process.env.EMAIL_HOST);
+
+    const info = await transporter.sendMail(mailOptions);
+
+    console.log('Mail sent:', info.response);
+    return true;
+  } catch (error) {
+    console.error('Mail error:', error);
+    throw error;
+  }
 };
 
 const sendWinnerEmail = async (email, name, contestTitle, prize, ticketNumber) => {
