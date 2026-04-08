@@ -3,11 +3,15 @@ const nodemailer = require('nodemailer');
 const createTransporter = () => {
   return nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false,       // STARTTLS — required on Render.com (port 465 is blocked)
+    requireTLS: true,    // enforce TLS upgrade
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false, // tolerate self-signed certs in some environments
     },
   });
 };
