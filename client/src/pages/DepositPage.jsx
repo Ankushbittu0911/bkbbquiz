@@ -106,7 +106,15 @@ export default function DepositPage() {
               style={{ paddingLeft: 36, fontSize: 20, fontWeight: 800 }}
               placeholder="0"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === '' || val === '-') { setAmount(''); return; }
+                const num = parseFloat(val);
+                if (!isNaN(num)) {
+                  if (num > MAX_AMOUNT) setAmount(String(MAX_AMOUNT));
+                  else setAmount(String(num));
+                }
+              }}
               min={MIN_AMOUNT}
               max={MAX_AMOUNT}
             />
@@ -128,7 +136,7 @@ export default function DepositPage() {
         </div>
 
         {/* QR Code & UPI */}
-        {amountNum > 0 && (
+        {amountNum >= MIN_AMOUNT && amountNum <= MAX_AMOUNT && (
           <div className="card" style={{ marginBottom: 16, textAlign: 'center' }}>
             <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12, fontWeight: 600 }}>Scan QR or pay with your UPI app</p>
 
