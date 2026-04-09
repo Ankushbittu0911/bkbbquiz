@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, QrCode, Copy, CheckCheck, Info } from 'lucide-react';
+import { ArrowLeft, QrCode, Copy, CheckCheck, Info, AlertTriangle } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
+
+const MIN_AMOUNT = 10;
+const MAX_AMOUNT = 50000;
+
+// Detect iPhone/iPad running Safari (not Chrome/Firefox)
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+const isSafari = isIOS && /Safari/i.test(navigator.userAgent) && !/CriOS|FxiOS|OPiOS|mercury/i.test(navigator.userAgent);
 
 export default function DepositPage() {
   const navigate = useNavigate();
@@ -40,7 +47,9 @@ export default function DepositPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!amount || amountNum <= 0) return toast.error('Enter valid amount');
+    if (!amount || amountNum <= 0) return toast.error('Enter a valid amount');
+    if (amountNum < MIN_AMOUNT) return toast.error(`Minimum deposit amount is ₹${MIN_AMOUNT}`);
+    if (amountNum > MAX_AMOUNT) return toast.error(`Maximum deposit amount is ₹${MAX_AMOUNT.toLocaleString('en-IN')}`);
     if (!txId.trim()) return toast.error('Enter UTR / Transaction ID');
     if (txId.trim().length !== 12) return toast.error('UTR number must be exactly 12 digits');
     depositMutation.mutate({ amount, transactionId: txId.trim(), upiId });
@@ -64,11 +73,32 @@ export default function DepositPage() {
         </div>
       </div>
 
+      {/* iOS Safari warning */}
+      {isSafari && (
+        <div style={{
+          margin: '0 16px',
+          marginTop: 12,
+          padding: '10px 14px',
+          borderRadius: 12,
+          background: 'rgba(234,179,8,0.12)',
+          border: '1px solid rgba(234,179,8,0.4)',
+          display: 'flex',
+          gap: 10,
+          alignItems: 'flex-start',
+        }}>
+          <AlertTriangle size={16} style={{ color: '#eab308', flexShrink: 0, marginTop: 2 }} />
+          <p style={{ fontSize: 12, color: '#fef08a', lineHeight: 1.6, margin: 0 }}>
+            <strong>iPhone users:</strong> Safari does not support opening UPI apps (GPay, PhonePe, etc.).
+            Please open this page in <strong>Chrome</strong> for UPI payments to work.
+          </p>
+        </div>
+      )}
+
       <div style={{ padding: 16 }}>
         {/* Amount selector */}
         <div className="card" style={{ marginBottom: 16 }}>
           <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: 10 }}>Enter Amount (₹)</label>
-          <div className="relative" style={{ marginBottom: 12 }}>
+          <div className="relative" style={{ marginBottom: 6 }}>
             <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 18, fontWeight: 700, color: 'var(--accent-gold)' }}>₹</span>
             <input
               type="number"
@@ -77,9 +107,13 @@ export default function DepositPage() {
               placeholder="0"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              min="10"
+              min={MIN_AMOUNT}
+              max={MAX_AMOUNT}
             />
           </div>
+          <p style={{ fontSize: 11, color: amountNum > 0 && (amountNum < MIN_AMOUNT || amountNum > MAX_AMOUNT) ? '#f87171' : 'var(--text-muted)', marginBottom: 12 }}>
+            Min ₹{MIN_AMOUNT} &nbsp;·&nbsp; Max ₹{MAX_AMOUNT.toLocaleString('en-IN')}
+          </p>
           <div className="flex flex-wrap gap-2">
             {PRESETS.map((p) => (
               <button key={p} onClick={() => setAmount(String(p))} style={{
