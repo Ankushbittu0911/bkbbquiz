@@ -30,7 +30,7 @@ router.post('/register', authLimiter, async (req, res, next) => {
           success: true,
           message: 'Registration successful',
           token,
-          user: { _id: existing._id, name: existing.name, username: existing.username, mobile: existing.mobile, email: existing.email, isAdmin: existing.isAdmin },
+          user: { _id: existing._id, name: existing.name, username: existing.username, mobile: existing.mobile, email: existing.email, dob: existing.dob, isAdmin: existing.isAdmin },
         });
       }
       const field = existing.mobile === mobile ? 'Mobile' : existing.email === email ? 'Email' : 'Username';
@@ -60,7 +60,7 @@ router.post('/register', authLimiter, async (req, res, next) => {
       success: true,
       message: 'Registration successful',
       token,
-      user: { _id: user._id, name: user.name, username: user.username, mobile: user.mobile, email: user.email, isAdmin: user.isAdmin },
+      user: { _id: user._id, name: user.name, username: user.username, mobile: user.mobile, email: user.email, dob: user.dob, isAdmin: user.isAdmin },
     });
   } catch (err) { next(err); }
 });
@@ -84,7 +84,7 @@ router.post('/login', authLimiter, async (req, res, next) => {
     res.json({
       success: true,
       token,
-      user: { _id: user._id, name: user.name, username: user.username, mobile: user.mobile, email: user.email, isAdmin: user.isAdmin },
+      user: { _id: user._id, name: user.name, username: user.username, mobile: user.mobile, email: user.email, dob: user.dob, isAdmin: user.isAdmin },
     });
   } catch (err) { next(err); }
 });
@@ -174,7 +174,7 @@ router.post('/reset-password/:token', async (req, res, next) => {
       success: true,
       message: 'Password reset successful',
       token,
-      user: { _id: user._id, name: user.name, username: user.username, mobile: user.mobile, email: user.email, isAdmin: user.isAdmin },
+      user: { _id: user._id, name: user.name, username: user.username, mobile: user.mobile, email: user.email, dob: user.dob, isAdmin: user.isAdmin },
     });
   } catch (err) { next(err); }
 });
